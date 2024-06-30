@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2023 sudachi Emulator Project
+// SPDX-FileCopyrightText: 2023 yuzu Emulator Project
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include <algorithm>
@@ -14,7 +14,7 @@
 
 #include "common/fs/fs_paths.h"
 #include "common/fs/path_util.h"
-#include "sudachi/breakpad.h"
+#include "suyu/breakpad.h"
 
 namespace Breakpad {
 
@@ -50,8 +50,8 @@ static void PruneDumpDirectory(const std::filesystem::path& dump_path) {
 }
 
 #if defined(__linux__)
-[[noreturn]] bool DumpCallback(const google_breakpad::MinidumpDescriptor& descriptor, void* context,
-                               bool succeeded) {
+[[noreturn]] static bool DumpCallback(const google_breakpad::MinidumpDescriptor& descriptor,
+                                      void* context, bool succeeded) {
     // Prevent time- and space-consuming core dumps from being generated, as we have
     // already generated a minidump and a core file will not be useful anyway.
     _exit(1);
@@ -60,7 +60,7 @@ static void PruneDumpDirectory(const std::filesystem::path& dump_path) {
 
 void InstallCrashHandler() {
     // Write crash dumps to profile directory.
-    const auto dump_path = GetSudachiPath(Common::FS::SudachiPath::CrashDumpsDir);
+    const auto dump_path = GetSuyuPath(Common::FS::SuyuPath::CrashDumpsDir);
     PruneDumpDirectory(dump_path);
 
 #if defined(_WIN32)
