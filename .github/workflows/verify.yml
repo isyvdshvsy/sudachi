@@ -3,6 +3,9 @@ name: 'yuzu verify'
 on:
   pull_request:
     branches: [ master ]
+  workflow_dispatch:  # 添加手动触发器
+    # 可以指定一个单独的分支来触发，例如:
+    # branches: [ main ]
 
 env:
   PR_NUMBER: pr${{ github.event.number }}
